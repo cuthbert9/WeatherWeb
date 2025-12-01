@@ -9,7 +9,7 @@ type ApiErrorProps = {
 
 export default function ApiError({ onRetry, message }: ApiErrorProps) {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-4 bg-[#0A0E2A] text-white p-6 rounded-xl">
+    <div className="w-full h-full flex flex-col items-center justify-center gap-4  text-white p-6 rounded-xl">
       <AlertCircle className="w-12 h-12 text-gray-400" />
 
       <h2 className="text-2xl font-semibold">Something went wrong</h2>

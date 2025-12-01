@@ -1,8 +1,6 @@
 'use client'
 import Image from "next/image";
 import { useState } from "react";
-
-
 import { Header } from "@/components/Header";
 import { SearchForm } from "@/components/SearchForm";
 import { EmptyState } from "@/components/EmptyState";
@@ -17,7 +15,7 @@ import ApiError from "@/components/ApiError";
 export default function Home() {
 
   const [data, setData] = useState(true);
-  const [isloading, setIsLoading] = useState(true);
+  const [isloading, setIsLoading] = useState(true );
   const [error, setError] = useState(false);
  
 
@@ -44,10 +42,8 @@ const getWeather= async(lat: number, lon: number)=>  {
 
 
 useEffect(() => {
-  getWeather(37.7749, -122.4194); 
-  
+  getWeather(37.7749, -122.4194);   
 }, []);
-
 
 
   return (
@@ -55,15 +51,11 @@ useEffect(() => {
       <Header />
 
 
-    
-
-
       <main className=" flex flex-col items-center  w-full max-w-3xl mx-auto mt-20 md:mt-30 gap-8 my-6">
         <h1 className="text-4xl md:text-5xl font-bold text-center ">
           How&apos;s the sky looking today?
         </h1>
         <SearchForm />
-
         {
           !data && (
 
@@ -72,10 +64,6 @@ useEffect(() => {
         }
        
       </main>
-
-
-
-
       {
         data && (
             

@@ -51,7 +51,9 @@ const HourForecast = ({ isLoading }: HourForecastProps) => {
 
 
         {
-            isLoading?          (  <div className="w-20 h-6 bg-gray-600 rounded-lg animate-pulse"></div>):(
+            isLoading?          (  <div className="w-20 h-6 bg-gray-800 rounded-lg animate-pulse">
+              
+            </div>):(
                      <select className="bg-[#2A2D43] text-gray-200 p-2 rounded-lg text-sm outline-none border-none">
           <option>Monday</option>
           <option>Tuesday</option>
