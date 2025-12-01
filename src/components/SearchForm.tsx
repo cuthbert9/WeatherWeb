@@ -9,15 +9,19 @@ type SearchFormData = {
 
 export function SearchForm() {
     const {
+        getValues,
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<SearchFormData>();
 
+
+
     const onSubmit =  (data: SearchFormData) => {
-        console.log("Searching for:", data.query);
-        
+        console.log("Searching for:", data.query);     
+       
     };
+  
 
     return (
         <form
