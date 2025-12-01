@@ -2,7 +2,7 @@ import { Sun, Settings } from "lucide-react";
 
 export function Header() {
     return (
-        <header className="flex justify-between items-center w-full max-w-7xl mx-auto">
+        <header className="flex justify-between items-center w-full ">
             <div className="flex items-center gap-2">
                 <Sun className="w-8 h-8 text-orange-400 fill-orange-400" />
                 <span className="text-xl font-bold tracking-tight">Weather Now</span>
