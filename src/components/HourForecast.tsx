@@ -28,7 +28,7 @@ const HourForecast = ({ isLoading }: HourForecastProps) => {
   // Skeleton placeholder
   const SkeletonItem = () => (
     <div className="animate-pulse h-12 flex items-center justify-between w-full bg-gray-800 p-4 rounded-xl">
-    
+
     </div>
   );
 
@@ -51,36 +51,36 @@ const HourForecast = ({ isLoading }: HourForecastProps) => {
 
 
         {
-            isLoading?          (  <div className="w-20 h-6 bg-gray-800 rounded-lg animate-pulse">
-              
-            </div>):(
-                     <select className="bg-[#2A2D43] text-gray-200 p-2 rounded-lg text-sm outline-none border-none">
-          <option>Monday</option>
-          <option>Tuesday</option>
-          <option>Wednesday</option>
-          <option>Thursday</option>
-          <option>Friday</option>
-          <option>Saturday</option>
-          <option>Sunday</option>
-        </select>
-            )
+          isLoading ? (<div className="w-20 h-6 bg-gray-800 rounded-lg animate-pulse">
+
+          </div>) : (
+            <select className="bg-[#2A2D43] text-gray-200 p-2 rounded-lg text-sm outline-none border-none">
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option>Sunday</option>
+            </select>
+          )
 
         }
 
-      
+
       </div>
 
       <div className="flex flex-col gap-3 overflow-y-auto">
         {isLoading
-          ? [...Array(8)].map((_, i) => <SkeletonItem key={i} />)
+          ? [...Array(9)].map((_, i) => <SkeletonItem key={i} />)
           : hourlyData.map((item, index) => (
-              <HourlyItem
-                key={index}
-                icon={item.icon}
-                time={item.time}
-                temperature={item.temp}
-              />
-            ))}
+            <HourlyItem
+              key={index}
+              icon={item.icon}
+              time={item.time}
+              temperature={item.temp}
+            />
+          ))}
       </div>
     </div>
   );

@@ -16,17 +16,15 @@ export function SearchForm() {
     } = useForm<SearchFormData>();
 
 
-
-    const onSubmit =  (data: SearchFormData) => {
-        console.log("Searching for:", data.query);     
-       
+    const onSubmit = (data: SearchFormData) => {
+        console.log("Searching for:", data.query);
     };
-  
+
 
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full flex gap-2"
+            className="w-full flex flex-col md:flex-row gap-2"
         >
             <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -46,7 +44,7 @@ export function SearchForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-medium transition-colors 
+                className={`bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-medium transition-colors w-full md:w-auto
                     disabled:opacity-50 disabled:cursor-not-allowed 
                     ${isSubmitting ? "animate-pulse" : ""}
                 `}

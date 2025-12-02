@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertCircle, RotateCcw } from "lucide-react";
+import {  RotateCcw } from "lucide-react";
+import { MdNotInterested } from "react-icons/md";
 
 type ApiErrorProps = {
   onRetry: () => void;
@@ -10,7 +11,7 @@ type ApiErrorProps = {
 export default function ApiError({ onRetry, message }: ApiErrorProps) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-4 mt-20 text-white p-6 rounded-xl">
-      <AlertCircle className="w-12 h-12 text-gray-400" />
+      <MdNotInterested className="w-12 h-12 text-gray-400" />
 
       <h2 className="text-3xl font-semibold">Something went wrong</h2>
 

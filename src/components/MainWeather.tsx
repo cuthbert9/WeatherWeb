@@ -16,15 +16,15 @@ const MainWeatherCard = ({
   date,
   icon,
   temperature,
-  isLoading ,
+  isLoading,
 }: MainWeatherCardProps) => {
   if (isLoading) {
     return (
       <div
-        className="relative bg-gray-800 rounded-2xl p-6 text-white w-full h-[250px] max-w-2xl flex flex-col md:flex-row items-center justify-between gap-4 overflow-hidden"
-       
+        className="relative bg-gray-800 rounded-2xl p-6 text-white w-full h-[250px] flex flex-col md:flex-row items-center justify-between gap-4 overflow-hidden"
+
       >
-    
+
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
           <div className="flex gap-2">
             <div className="w-3 h-3 bg-white rounded-full animate-bounce [animation-delay:-0.3s]" />
@@ -37,22 +37,22 @@ const MainWeatherCard = ({
     );
   }
 
- 
+
   return (
     <div
-      className="rounded-2xl p-6 text-white w-full h-[250px] max-w-2xl flex flex-col md:flex-row items-center justify-between gap-4"
+      className="rounded-2xl p-6 text-white w-full h-auto md:h-[250px] flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4"
       style={{
         backgroundImage: 'url("/Images/bg-today-large.svg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
     >
-      <div>
-        <h2 className="text-xl font-semibold">
+      <div className="flex flex-col items-center md:items-start text-center md:text-left">
+        <h2 className="text-2xl md:text-xl font-semibold">
           {city}
           {country ? `, ${country}` : ""}
         </h2>
-        <p className="text-sm opacity-90">{date}</p>
+        <p className="text-sm opacity-90 mt-1">{date}</p>
       </div>
 
       <div className="flex items-center gap-6">
