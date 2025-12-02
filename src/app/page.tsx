@@ -51,7 +51,7 @@ export default function Home() {
 
 
   if (error) {
-    return (<div className="h-full flex  flex-col mx-30 p-6 md:p-12">
+    return (<div className="h-full flex  flex-col mx-auto p-6 md:p-12">
 
       <Header />
       <ApiError
