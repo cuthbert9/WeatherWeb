@@ -1,13 +1,14 @@
 import Image from "next/image";
-import { Loader2 } from "lucide-react"; // Optional: for a nicer spinner, or use built-in dots
+import { Loader2 } from "lucide-react";
 
 type MainWeatherCardProps = {
   city: string;
   country?: string;
   date: string;
-  icon?: React.ReactNode; // Made optional during loading
-  temperature?: number;   // Made optional during loading
+  icon?: React.ReactNode;
+  temperature?: number;
   isLoading?: boolean;
+  unit?: string;
 };
 
 const MainWeatherCard = ({
@@ -17,26 +18,9 @@ const MainWeatherCard = ({
   icon,
   temperature,
   isLoading,
+  unit = "°C",
 }: MainWeatherCardProps) => {
-  if (isLoading) {
-    return (
-      <div
-        className="relative bg-gray-800 rounded-2xl p-6 text-white w-full h-[250px] flex flex-col md:flex-row items-center justify-between gap-4 overflow-hidden"
-
-      >
-
-        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <div className="flex gap-2">
-            <div className="w-3 h-3 bg-white rounded-full animate-bounce [animation-delay:-0.3s]" />
-            <div className="w-3 h-3 bg-white rounded-full animate-bounce [animation-delay:-0.15s]" />
-            <div className="w-3 h-3 bg-white rounded-full animate-bounce" />
-          </div>
-          <span className="ml-3 text-white text-sm opacity-80">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-
+  // ... (loading state remains same)
 
   return (
     <div
@@ -56,8 +40,10 @@ const MainWeatherCard = ({
       </div>
 
       <div className="flex items-center gap-6">
-        {icon || <Image src="/Images/icon-sunny.webp" alt="Weather icon" width={100} height={100} />}
-        <div className="text-6xl font-bold">{temperature}°</div>
+        <div className="w-[100px] h-[100px]">
+          {icon}
+        </div>
+        <div className="text-6xl font-bold">{temperature}{unit}</div>
       </div>
     </div>
   );

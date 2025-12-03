@@ -1,86 +1,166 @@
-import { WiDayCloudy, WiCloud, WiDaySunny, WiRain, WiSnow } from "react-icons/wi";
-import Image from "next/image";
+"use client";
+
+import { getWeatherIcon } from "@/uitls";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { ChevronDown } from "lucide-react";
+
+type HourlyItemData = {
+  time: string;
+  temp: number;
+  weatherCode: number;
+  fullTime: string;
+};
 
 type HourForecastProps = {
   isLoading: boolean;
+  data?: HourlyItemData[];
 };
 
-const HourForecast = ({ isLoading }: HourForecastProps) => {
+const HourForecast = ({ isLoading, data }: HourForecastProps) => {
+  const [selectedDay, setSelectedDay] = useState<string>("Today");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Get unique days from data
+  const availableDays = useMemo(() => {
+    if (!data) return [];
+    const days = new Set<string>();
+    const today = new Date().toDateString();
+
+    data.forEach(item => {
+      const date = new Date(item.fullTime);
+      const dateString = date.toDateString();
+
+      if (dateString === today) {
+        days.add("Today");
+      } else {
+        days.add(date.toLocaleDateString('en-US', { weekday: 'long' }));
+      }
+    });
+
+    return Array.from(days);
+  }, [data]);
+
+ 
+  const filteredData = useMemo(() => {
+    if (!data) return [];
+
+    const today = new Date().toDateString();
+
+    return data.filter(item => {
+      const date = new Date(item.fullTime);
+      const dateString = date.toDateString();
+      const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+
+      if (selectedDay === "Today") {
+        return dateString === today;
+      }
+      return dayName === selectedDay;
+    });
+  }, [data, selectedDay]);
+
+  // Click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Update selected day when data changes (reset to Today)
+  useEffect(() => {
+    if (availableDays.length > 0 && !availableDays.includes(selectedDay)) {
+      setSelectedDay("Today");
+    }
+  }, [availableDays]);
 
   const HourlyItem = ({
-    icon,
+    weatherCode,
     time,
     temperature,
   }: {
-    icon: React.ReactNode;
+    weatherCode: number;
     time: string;
     temperature: number;
   }) => (
-    <div className="flex items-center justify-between w-full bg-[#2A2D43] p-4 rounded-xl shadow-sm ">
+    <div className="flex items-center justify-between w-full bg-[#2A2D43] px-4 rounded-xl shadow-sm flex-1 max-h-[70px]">
       <div className="flex items-center gap-3">
-        <span className="text-2xl text-gray-200">{icon}</span>
-        <span className="text-gray-200 font-medium">{time}</span>
+        <div className="w-6 h-6 relative">
+          {getWeatherIcon(weatherCode, "w-full h-full text-yellow-400")}
+        </div>
+        <span className="text-gray-200 font-medium text-sm">{time}</span>
       </div>
-      <span className="text-gray-200 font-semibold">{temperature}°</span>
+      <span className="text-gray-200 font-semibold text-sm">{temperature}°</span>
     </div>
   );
 
   // Skeleton placeholder
   const SkeletonItem = () => (
-    <div className="animate-pulse h-12 flex items-center justify-between w-full bg-gray-800 p-4 rounded-xl">
+    <div className="animate-pulse flex-1 w-full bg-gray-800 rounded-xl min-h-[50px]">
 
     </div>
   );
 
-  const hourlyData = [
-    { time: "3 PM", temp: 68, icon: <Image src="/Images/icon-rain.webp" alt="Sunny Icon" width={20} height={20} /> },
-    { time: "4 PM", temp: 68, icon: <Image src="/Images/icon-storm.webp" alt="Sunny Icon" width={20} height={20} /> },
-    { time: "5 PM", temp: 68, icon: <Image src="/Images/icon-snow.webp" alt="Sunny Icon" width={20} height={20} /> },
-    { time: "6 PM", temp: 66, icon: <Image src="/Images/icon-snow.webp" alt="Sunny Icon" width={20} height={20} /> },
-    { time: "7 PM", temp: 66, icon: <Image src="/Images/icon-sunny.webp" alt="Sunny Icon" width={20} height={20} /> },
-    { time: "8 PM", temp: 64, icon: <Image src="/Images/icon-snow.webp" alt="Sunny Icon" width={20} height={20} /> },
-    { time: "9 PM", temp: 63, icon: <Image src="/Images/icon-snow.webp" alt="Sunny Icon" width={20} height={20} /> },
-    { time: "10 PM", temp: 63, icon: <Image src="/Images/icon-snow.webp" alt="Sunny Icon" width={20} height={20} /> },
-  ];
-
   return (
-    <div className="bg-[#1C1F32] p-6 rounded-2xl w-full">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-[#1C1F32] p-6 rounded-2xl w-full h-full flex flex-col relative">
+      {/* Header with Dropdown */}
+      <div className="flex justify-between items-center mb-4 z-20">
         <h3 className="text-gray-100 font-semibold text-lg">Hourly forecast</h3>
 
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white bg-white/5 px-3 py-1.5 rounded-lg transition-colors"
+          >
+            {selectedDay}
+            <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+          </button>
 
-        {
-          isLoading ? (<div className="w-20 h-6 bg-gray-800 rounded-lg animate-pulse">
-
-          </div>) : (
-            <select className="bg-[#2A2D43] text-gray-200 p-2 rounded-lg text-sm outline-none border-none">
-              <option>Monday</option>
-              <option>Tuesday</option>
-              <option>Wednesday</option>
-              <option>Thursday</option>
-              <option>Friday</option>
-              <option>Saturday</option>
-              <option>Sunday</option>
-            </select>
-          )
-
-        }
-
-
+          {isDropdownOpen && (
+            <div className="absolute right-0 top-full mt-2 w-40 bg-[#2A2D43] border border-white/10 rounded-xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-150">
+              {availableDays.map((day) => (
+                <button
+                  key={day}
+                  onClick={() => {
+                    setSelectedDay(day);
+                    setIsDropdownOpen(false);
+                  }}
+                  className={`w-full text-left px-4 py-2 text-sm hover:bg-white/5 transition-colors
+                    ${selectedDay === day ? 'text-white font-medium bg-white/10' : 'text-gray-400'}
+                  `}
+                >
+                  {day}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="flex flex-col gap-3 overflow-y-auto">
-        {isLoading
-          ? [...Array(9)].map((_, i) => <SkeletonItem key={i} />)
-          : hourlyData.map((item, index) => (
+      <div className="flex flex-col gap-2 h-full overflow-hidden justify-between">
+        {isLoading || !data
+          ? [...Array(6)].map((_, i) => <SkeletonItem key={i} />)
+          : filteredData.slice(0, 6).map((item, index) => (
             <HourlyItem
               key={index}
-              icon={item.icon}
+              weatherCode={item.weatherCode}
               time={item.time}
               temperature={item.temp}
             />
           ))}
+
+        {/* Show message if no data for selected day (e.g. late night) */}
+        {!isLoading && filteredData.length === 0 && (
+          <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+            No hourly data available
+          </div>
+        )}
       </div>
     </div>
   );

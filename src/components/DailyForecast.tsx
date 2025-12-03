@@ -5,7 +5,7 @@ type DailyForecastCardProps = {
   icon: React.ReactNode;
   high: number;
   low: number;
-  isLoading?: boolean; // Add loading state
+  isLoading?: boolean; 
 };
 
 export default function DailyForecastCard({
@@ -18,7 +18,7 @@ export default function DailyForecastCard({
   if (isLoading) {
     return (
       <div className="bg-gray-800 rounded-xl p-4 flex flex-col items-center justify-center w-28 h-35">
-       
+
       </div>
     );
   }
